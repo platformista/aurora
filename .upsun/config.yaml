@@ -1,0 +1,233 @@
+# aurora-demo — one Upsun project, three Laravel applications.
+# Every key below was checked against developer.upsun.com (Nov 2026).
+
+applications:
+
+  # ---------------------------------------------------------------------------
+  # NFW/Bridge: seller portal and back office (Inertia + React)
+  # ---------------------------------------------------------------------------
+  nfw:
+    source:
+      root: apps/nfw
+    type: "php:8.5"
+    runtime:
+      extensions:
+        - redis
+        - rdkafka
+    dependencies:
+      nodejs:
+        n: "*"                 # Node version manager; version pinned in apps/nfw/.nvmrc
+    build:
+      flavor: none
+    variables:
+      env:
+        N_PREFIX: /app/.global
+    relationships:
+      database:                # -> DATABASE_* env vars, own schema only
+        service: mariadb
+        endpoint: nfw
+      redis:                   # -> REDIS_* env vars (Laravel picks these up)
+        service: valkey
+        endpoint: valkey
+      kafka:
+        service: kafka
+        endpoint: kafka
+      promotions:              # http://promotions.internal — synchronous pricing
+        service: promotions
+        endpoint: http
+      oms:                     # http://oms.internal — dashboard stats, invoice download
+        service: oms
+        endpoint: http
+    mounts:
+      storage:
+        source: storage
+        source_path: storage
+      bootstrap/cache:
+        source: storage
+        source_path: bootstrap-cache
+    hooks:
+      build: |
+        set -eux
+        composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+        n auto && hash -r
+        npm ci && npm run build
+      deploy: |
+        set -eux
+        php artisan optimize
+        php artisan migrate --force
+        php artisan aurora:kafka-topics
+    web:
+      locations:
+        "/":
+          root: public
+          passthru: /index.php
+          expires: 1h
+    crons:
+      commissions:
+        spec: "15 2 * * *"     # nightly; only dispatches jobs, returns in seconds
+        commands:
+          start: php artisan commissions:run --period=current
+    workers:
+      horizon:                 # default queue
+        variables:
+          env:
+            HORIZON_SUPERVISORS: default
+        commands:
+          start: php artisan horizon
+      commissions:             # dedicated Horizon queue, resized in scene 5
+        variables:
+          env:
+            HORIZON_SUPERVISORS: commissions
+        commands:
+          start: php artisan horizon
+      relay:                   # outbox -> Kafka
+        commands:
+          start: php artisan outbox:relay
+      consumer:                # order.shipped -> order status
+        commands:
+          start: php artisan kafka:consume nfw
+
+  # ---------------------------------------------------------------------------
+  # OMS: order management (no public route)
+  # ---------------------------------------------------------------------------
+  oms:
+    source:
+      root: apps/oms
+    type: "php:8.5"
+    runtime:
+      extensions:
+        - redis
+        - rdkafka
+    build:
+      flavor: none
+    relationships:
+      database:
+        service: mariadb
+        endpoint: oms
+      redis:
+        service: valkey
+        endpoint: valkey
+      kafka:
+        service: kafka
+        endpoint: kafka
+    mounts:
+      storage:
+        source: storage
+        source_path: storage
+      bootstrap/cache:
+        source: storage
+        source_path: bootstrap-cache
+    hooks:
+      build: |
+        set -eux
+        composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+      deploy: |
+        set -eux
+        php artisan optimize
+        php artisan migrate --force
+    web:
+      locations:
+        "/":
+          root: public
+          passthru: /index.php
+    workers:
+      horizon:                 # invoice PDF generation -> object storage
+        commands:
+          start: php artisan horizon
+      relay:
+        commands:
+          start: php artisan outbox:relay
+      consumer:                # order.placed -> shipment + invoice
+        commands:
+          start: php artisan kafka:consume oms
+    # Object storage is not a config key: it is enabled with
+    #   upsun resources:set --object-storage oms:524288
+    # and appears as the reserved `object-storage` relationship.
+
+  # ---------------------------------------------------------------------------
+  # Promotion Engine: pricing API (no public route)
+  # ---------------------------------------------------------------------------
+  promotions:
+    source:
+      root: apps/promotions
+    type: "php:8.5"
+    runtime:
+      extensions:
+        - redis
+        - rdkafka
+    build:
+      flavor: none
+    relationships:
+      database:
+        service: mariadb
+        endpoint: promotions
+      redis:
+        service: valkey
+        endpoint: valkey
+      kafka:
+        service: kafka
+        endpoint: kafka
+    mounts:
+      storage:
+        source: storage
+        source_path: storage
+      bootstrap/cache:
+        source: storage
+        source_path: bootstrap-cache
+    hooks:
+      build: |
+        set -eux
+        composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+      deploy: |
+        set -eux
+        php artisan optimize
+        php artisan migrate --force
+    web:
+      locations:
+        "/":
+          root: public
+          passthru: /index.php
+    workers:
+      relay:
+        commands:
+          start: php artisan outbox:relay
+      consumer:                # order.placed -> promotion redemption ledger
+        commands:
+          start: php artisan kafka:consume promotions
+
+services:
+  mariadb:
+    type: mariadb:11.8
+    configuration:
+      schemas:
+        - nfw
+        - oms
+        - promotions
+      endpoints:               # one user per app, each sees only its own schema
+        nfw:
+          default_schema: nfw
+          privileges:
+            nfw: admin
+        oms:
+          default_schema: oms
+          privileges:
+            oms: admin
+        promotions:
+          default_schema: promotions
+          privileges:
+            promotions: admin
+
+  valkey:
+    type: valkey-persistent:8.1   # persistent: queued jobs survive a restart
+
+  kafka:
+    type: kafka:4.3
+
+routes:
+  "https://{default}/":
+    type: upstream
+    upstream: "nfw:http"
+    primary: true
+  "https://www.{default}/":
+    type: redirect
+    to: "https://{default}/"
