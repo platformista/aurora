@@ -66,7 +66,7 @@ applications:
       commissions:
         spec: "15 2 * * *"     # nightly; only dispatches jobs, returns in seconds
         commands:
-          start: php artisan commissions:run --period=current
+          start: php artisan commissions:run --period=current --trigger=cron
     workers:
       horizon:                 # default queue
         variables:

@@ -1,0 +1,23 @@
+# Sourced by Upsun at runtime. See apps/nfw/.environment for the general notes.
+
+export APP_NAME="Aurora Promotions"
+export APP_ENV="production"
+export APP_DEBUG="false"
+if [ "$PLATFORM_ENVIRONMENT_TYPE" != "production" ]; then export APP_ENV="staging"; fi
+export LOG_CHANNEL="stderr"
+
+export DB_CONNECTION="mariadb"
+export DB_HOST="$DATABASE_HOST"
+export DB_PORT="$DATABASE_PORT"
+export DB_DATABASE="$DATABASE_PATH"
+export DB_USERNAME="$DATABASE_USERNAME"
+export DB_PASSWORD="$DATABASE_PASSWORD"
+
+unset REDIS_URL
+export REDIS_CLIENT="phpredis"
+export CACHE_STORE="redis"
+export SESSION_DRIVER="redis"
+export QUEUE_CONNECTION="redis"
+export REDIS_PREFIX="promotions:"
+
+export KAFKA_BROKERS="${KAFKA_HOST}:${KAFKA_PORT}"

@@ -1,0 +1,34 @@
+# Sourced by Upsun at runtime (web, workers, crons, deploy hook).
+# Maps the service variables Upsun generates from the relationships in
+# .upsun/config.yaml to the names Laravel reads. No secrets here: APP_KEY is a
+# sensitive project variable (see README).
+
+export APP_NAME="Aurora NFW"
+export APP_ENV="production"
+export APP_DEBUG="false"
+if [ "$PLATFORM_ENVIRONMENT_TYPE" != "production" ]; then export APP_ENV="staging"; fi
+export APP_URL="$(echo "$PLATFORM_ROUTES" | base64 --decode | jq -r 'to_entries[] | select(.value.primary == true) | .key' | head -n1 | sed 's:/$::')"
+export LOG_CHANNEL="stderr"
+
+# MariaDB: relationship "database" -> this app's own schema and user.
+export DB_CONNECTION="mariadb"
+export DB_HOST="$DATABASE_HOST"
+export DB_PORT="$DATABASE_PORT"
+export DB_DATABASE="$DATABASE_PATH"
+export DB_USERNAME="$DATABASE_USERNAME"
+export DB_PASSWORD="$DATABASE_PASSWORD"
+
+# Valkey: relationship "redis". Host and port only; the relationship's scheme is "valkey".
+unset REDIS_URL
+export REDIS_CLIENT="phpredis"
+export CACHE_STORE="redis"
+export SESSION_DRIVER="redis"
+export QUEUE_CONNECTION="redis"
+export REDIS_PREFIX="nfw:"
+
+# Kafka: relationship "kafka".
+export KAFKA_BROKERS="${KAFKA_HOST}:${KAFKA_PORT}"
+
+# Other apps in the project, reached over the internal network (HTTP relationships).
+export PROMOTIONS_URL="http://${PROMOTIONS_HOST}"
+export OMS_URL="http://${OMS_HOST}"
