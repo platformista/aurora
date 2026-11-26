@@ -1,0 +1,26 @@
+# Local services only. The apps run with `php artisan serve` (see README).
+# On Upsun these are the mariadb, valkey and kafka services in .upsun/config.yaml.
+services:
+  mariadb:
+    image: mariadb:11.8
+    environment:
+      MARIADB_ROOT_PASSWORD: root
+    ports: ["3306:3306"]
+    volumes:
+      - ./local/mariadb-init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+
+  valkey:
+    image: valkey/valkey:8.1
+    ports: ["6379:6379"]
+
+  # Kafka-compatible broker for local work; Upsun runs Apache Kafka.
+  redpanda:
+    image: redpandadata/redpanda:v25.2.1
+    command:
+      - redpanda
+      - start
+      - --mode=dev-container
+      - --smp=1
+      - --kafka-addr=internal://0.0.0.0:9092,external://0.0.0.0:19092
+      - --advertise-kafka-addr=internal://redpanda:9092,external://localhost:19092
+    ports: ["19092:19092"]

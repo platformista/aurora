@@ -43,8 +43,8 @@ class PromotionsApiTest extends TestCase
         ]);
         $consumer = app(IdempotentConsumer::class);
 
-        $consumer->handle('promotions', $event, app(OrderPlaced::class));
-        $consumer->handle('promotions', $event, app(OrderPlaced::class));
+        $consumer->handle('orders', $event, app(OrderPlaced::class));
+        $consumer->handle('orders', $event, app(OrderPlaced::class));
 
         $this->assertSame(2, DB::table('redemptions')->count());
         $this->assertSame(['SOGLIA-80', 'OMAGGIO-NOTTE'], OutboxEvent::sole()->payload['payload']['codes']);
@@ -57,9 +57,25 @@ class PromotionsApiTest extends TestCase
             'order_id' => $orderId, 'seller' => ['code' => 'INC-000003'], 'promotions' => [], 'gifts' => [],
         ]);
 
-        app(IdempotentConsumer::class)->handle('promotions', $event, app(OrderPlaced::class));
+        app(IdempotentConsumer::class)->handle('orders', $event, app(OrderPlaced::class));
 
         $this->assertSame(0, OutboxEvent::count());
         $this->assertSame(1, DB::table('processed_events')->count());
+    }
+
+    public function test_the_handler_is_idempotent_on_its_own(): void
+    {
+        $orderId = (string) Str::uuid7();
+        $payload = ['order_id' => $orderId, 'seller' => ['code' => 'INC-000003'],
+            'promotions' => [['code' => 'SOGLIA-80', 'label' => '10%', 'amount_cents' => 798]], 'gifts' => []];
+        $handler = app(OrderPlaced::class);
+
+        foreach ([1, 2] as $delivery) {   // two different event IDs for the same order
+            $event = new Envelope((string) Str::uuid7(), 'order.placed', 'nfw', $orderId, now()->toIso8601String(), $payload);
+            DB::transaction(fn () => $handler($event));
+        }
+
+        $this->assertSame(1, DB::table('redemptions')->count());
+        $this->assertSame(1, OutboxEvent::count());
     }
 }

@@ -63,7 +63,7 @@ class OrderFlowTest extends TestCase
         $service = app(OrderService::class);
         $lines = $service->lines(['VIS-004' => 1]);
         DB::listen(function ($query) {
-            if (str_contains($query->sql, 'insert into "outbox_events"')) {
+            if (str_starts_with(strtolower($query->sql), 'insert') && str_contains($query->sql, 'outbox_events')) {
                 throw new RuntimeException('disk full');
             }
         });
@@ -110,8 +110,8 @@ class OrderFlowTest extends TestCase
         ]);
         $consumer = app(IdempotentConsumer::class);
 
-        $this->assertTrue($consumer->handle('nfw', $event, app(OrderShipped::class)));
-        $this->assertFalse($consumer->handle('nfw', $event, app(OrderShipped::class)));
+        $this->assertTrue($consumer->handle('shipments', $event, app(OrderShipped::class)));
+        $this->assertFalse($consumer->handle('shipments', $event, app(OrderShipped::class)));
 
         $this->assertSame('shipped', $order->fresh()->status);
         $this->assertSame('CO-123', $order->fresh()->tracking_code);

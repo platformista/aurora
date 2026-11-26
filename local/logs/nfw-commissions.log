@@ -1,0 +1,112 @@
+
+ INFO Horizon started successfully. 
+
+ 2026-11-26 21:43:03 App\Jobs\PrepareCommissionRun .. RUNNING
+ 2026-11-26 21:43:04 App\Jobs\PrepareCommissionRun .. 505.37ms DONE
+ 2026-11-26 21:43:04 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:03 Worker STOPPED Interrupted
+ 2026-11-26 21:43:05 App\Jobs\ComputeCommissionChunk .. 714.17ms DONE
+ 2026-11-26 21:43:05 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:05 App\Jobs\ComputeCommissionChunk .. 705.08ms DONE
+ 2026-11-26 21:43:05 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:06 App\Jobs\ComputeCommissionChunk .. 698.00ms DONE
+ 2026-11-26 21:43:06 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:07 App\Jobs\ComputeCommissionChunk .. 818.39ms DONE
+ 2026-11-26 21:43:07 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:06 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:07 App\Jobs\ComputeCommissionChunk .. 742.82ms DONE
+ 2026-11-26 21:43:07 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:06 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:07 App\Jobs\ComputeCommissionChunk .. 713.67ms DONE
+ 2026-11-26 21:43:07 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:07 App\Jobs\ComputeCommissionChunk .. 706.81ms DONE
+ 2026-11-26 21:43:07 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:08 App\Jobs\ComputeCommissionChunk .. 744.76ms DONE
+ 2026-11-26 21:43:08 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:08 App\Jobs\ComputeCommissionChunk .. 663.45ms DONE
+ 2026-11-26 21:43:08 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:08 App\Jobs\ComputeCommissionChunk .. 686.41ms DONE
+ 2026-11-26 21:43:08 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:09 App\Jobs\ComputeCommissionChunk .. 724.13ms DONE
+ 2026-11-26 21:43:09 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:09 App\Jobs\ComputeCommissionChunk .. 765.52ms DONE
+ 2026-11-26 21:43:09 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:08 App\Jobs\ComputeCommissionChunk .. 747.26ms DONE
+ 2026-11-26 21:43:08 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:10 App\Jobs\ComputeCommissionChunk .. 629.57ms DONE
+ 2026-11-26 21:43:10 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:10 App\Jobs\ComputeCommissionChunk .. 616.30ms DONE
+ 2026-11-26 21:43:10 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:09 App\Jobs\ComputeCommissionChunk .. 714.81ms DONE
+ 2026-11-26 21:43:09 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:10 App\Jobs\ComputeCommissionChunk .. 739.53ms DONE
+ 2026-11-26 21:43:10 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:09 App\Jobs\ComputeCommissionChunk .. 708.64ms DONE
+ 2026-11-26 21:43:09 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:10 App\Jobs\ComputeCommissionChunk .. 594.30ms DONE
+ 2026-11-26 21:43:10 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:09 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:10 App\Jobs\ComputeCommissionChunk .. 766.88ms DONE
+ 2026-11-26 21:43:10 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:11 App\Jobs\ComputeCommissionChunk .. 740.21ms DONE
+ 2026-11-26 21:43:11 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:11 App\Jobs\ComputeCommissionChunk .. 672.14ms DONE
+ 2026-11-26 21:43:11 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:10 App\Jobs\ComputeCommissionChunk .. 613.99ms DONE
+ 2026-11-26 21:43:10 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:11 App\Jobs\ComputeCommissionChunk .. 722.19ms DONE
+ 2026-11-26 21:43:11 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:12 App\Jobs\ComputeCommissionChunk .. 624.36ms DONE
+ 2026-11-26 21:43:12 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:12 App\Jobs\ComputeCommissionChunk .. 785.23ms DONE
+ 2026-11-26 21:43:12 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:11 App\Jobs\ComputeCommissionChunk .. 782.16ms DONE
+ 2026-11-26 21:43:11 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:12 App\Jobs\ComputeCommissionChunk .. 658.76ms DONE
+ 2026-11-26 21:43:12 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:12 App\Jobs\ComputeCommissionChunk .. 731.23ms DONE
+ 2026-11-26 21:43:12 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:12 App\Jobs\ComputeCommissionChunk .. 588.38ms DONE
+ 2026-11-26 21:43:12 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:12 App\Jobs\ComputeCommissionChunk .. 738.25ms DONE
+ 2026-11-26 21:43:12 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:12 App\Jobs\ComputeCommissionChunk .. 772.83ms DONE
+ 2026-11-26 21:43:12 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:13 App\Jobs\ComputeCommissionChunk .. 782.86ms DONE
+ 2026-11-26 21:43:13 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:13 App\Jobs\ComputeCommissionChunk .. 881.40ms DONE
+ 2026-11-26 21:43:13 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:12 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:13 App\Jobs\ComputeCommissionChunk .. 1 sec. DONE
+ 2026-11-26 21:43:13 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:14 App\Jobs\ComputeCommissionChunk .. 837.90ms DONE
+ 2026-11-26 21:43:14 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:13 App\Jobs\ComputeCommissionChunk .. 1 sec. DONE
+ 2026-11-26 21:43:13 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:14 App\Jobs\ComputeCommissionChunk .. 832.90ms DONE
+ 2026-11-26 21:43:14 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:14 App\Jobs\ComputeCommissionChunk .. 877.81ms DONE
+ 2026-11-26 21:43:14 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:14 App\Jobs\ComputeCommissionChunk .. 763.84ms DONE
+ 2026-11-26 21:43:14 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:14 App\Jobs\ComputeCommissionChunk .. 1 sec. DONE
+ 2026-11-26 21:43:14 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:15 App\Jobs\ComputeCommissionChunk .. 674.30ms DONE
+ 2026-11-26 21:43:15 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:15 App\Jobs\ComputeCommissionChunk .. 857.90ms DONE
+ 2026-11-26 21:43:14 App\Jobs\ComputeCommissionChunk .. 899.65ms DONE
+ 2026-11-26 21:43:14 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:15 App\Jobs\ComputeCommissionChunk .. 850.90ms DONE
+ 2026-11-26 21:43:15 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:14 App\Jobs\ComputeCommissionChunk .. 964.02ms DONE
+ 2026-11-26 21:43:14 App\Jobs\ComputeCommissionChunk .. RUNNING
+ 2026-11-26 21:43:15 App\Jobs\ComputeCommissionChunk .. 905.79ms DONE
+ 2026-11-26 21:43:15 App\Jobs\ComputeCommissionChunk .. 797.01ms DONE
+ 2026-11-26 21:43:15 App\Jobs\ComputeCommissionChunk .. 818.10ms DONE
+ 2026-11-26 21:43:16 App\Jobs\ComputeCommissionChunk .. 720.52ms DONE
+ 2026-11-26 21:43:16 Worker STOPPED Interrupted
+ 2026-11-26 21:43:18 App\Jobs\FinalizeCommissionRun .. RUNNING
+ 2026-11-26 21:43:19 App\Jobs\FinalizeCommissionRun .. 951.31ms DONE
+ 2026-11-26 21:43:19 Worker STOPPED Interrupted
+ 2026-11-26 21:43:21 Worker STOPPED Interrupted
+ 2026-11-26 21:43:24 Worker STOPPED Interrupted

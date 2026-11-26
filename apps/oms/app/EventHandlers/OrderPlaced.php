@@ -21,6 +21,13 @@ class OrderPlaced
     public function __invoke(Envelope $event): void
     {
         $p = $event->payload;
+
+        // Second line of defence, independent of processed_events: one shipment per order.
+        // (Covers e.g. a renamed consumer re-reading the topic under a new dedup key.)
+        if (Shipment::query()->where('order_uuid', $p['order_id'])->exists()) {
+            return;
+        }
+
         $carrier = self::CARRIERS[crc32($p['order_id']) % count(self::CARRIERS)];
 
         $shipment = Shipment::create([

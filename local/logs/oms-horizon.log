@@ -1,0 +1,85 @@
+
+ INFO Horizon started successfully. 
+
+ 2026-11-26 21:40:35 App\Jobs\GenerateInvoice .. RUNNING
+ 2026-11-26 21:40:35 App\Jobs\GenerateInvoice .. 137.31ms DONE
+ 2026-11-26 21:40:35 App\Jobs\GenerateInvoice .. RUNNING
+ 2026-11-26 21:40:35 App\Jobs\GenerateInvoice .. 65.16ms DONE
+ 2026-11-26 21:40:35 App\Jobs\GenerateInvoice .. RUNNING
+ 2026-11-26 21:40:35 App\Jobs\GenerateInvoice .. 72.86ms DONE
+ 2026-11-26 21:40:35 App\Jobs\GenerateInvoice .. RUNNING
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. 72.78ms DONE
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. RUNNING
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. 97.02ms DONE
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. RUNNING
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. 102.78ms DONE
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. RUNNING
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. 67.71ms DONE
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. RUNNING
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. 56.44ms DONE
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. RUNNING
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. 57.00ms DONE
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. RUNNING
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. 54.50ms DONE
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. RUNNING
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. 58.12ms DONE
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. RUNNING
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. 55.25ms DONE
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. RUNNING
+ 2026-11-26 21:40:35 App\Jobs\GenerateInvoice .. RUNNING
+ 2026-11-26 21:40:35 App\Jobs\GenerateInvoice .. 142.81ms DONE
+ 2026-11-26 21:40:35 App\Jobs\GenerateInvoice .. RUNNING
+ 2026-11-26 21:40:35 App\Jobs\GenerateInvoice .. 62.82ms DONE
+ 2026-11-26 21:40:35 App\Jobs\GenerateInvoice .. RUNNING
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. 74.12ms DONE
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. RUNNING
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. 97.27ms DONE
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. RUNNING
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. 87.24ms DONE
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. RUNNING
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. 57.31ms DONE
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. RUNNING
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. 51.66ms DONE
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. RUNNING
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. 59.08ms DONE
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. RUNNING
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. 55.53ms DONE
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. RUNNING
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. 54.87ms DONE
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. RUNNING
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. 53.05ms DONE
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. RUNNING
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. 59.56ms DONE
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. RUNNING
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. 55.46ms DONE
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. RUNNING
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. 55.52ms DONE
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. RUNNING
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. 62.47ms DONE
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. RUNNING
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. 69.44ms DONE
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. RUNNING
+ 2026-11-26 21:40:37 App\Jobs\GenerateInvoice .. 68.26ms DONE
+ 2026-11-26 21:40:37 App\Jobs\GenerateInvoice .. RUNNING
+ 2026-11-26 21:40:37 App\Jobs\GenerateInvoice .. 76.91ms DONE
+ 2026-11-26 21:40:37 App\Jobs\GenerateInvoice .. RUNNING
+ 2026-11-26 21:40:37 App\Jobs\GenerateInvoice .. 65.72ms DONE
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. 89.98ms DONE
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. RUNNING
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. 67.20ms DONE
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. RUNNING
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. 66.52ms DONE
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. RUNNING
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. 66.09ms DONE
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. RUNNING
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. 68.00ms DONE
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. RUNNING
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. 65.59ms DONE
+ 2026-11-26 21:40:36 App\Jobs\GenerateInvoice .. RUNNING
+ 2026-11-26 21:40:37 App\Jobs\GenerateInvoice .. 71.22ms DONE
+ 2026-11-26 21:40:37 App\Jobs\GenerateInvoice .. RUNNING
+ 2026-11-26 21:40:37 App\Jobs\GenerateInvoice .. 68.38ms DONE
+ 2026-11-26 21:40:37 App\Jobs\GenerateInvoice .. RUNNING
+ 2026-11-26 21:40:37 App\Jobs\GenerateInvoice .. 66.96ms DONE
+ 2026-11-26 21:40:38 Worker STOPPED Interrupted
+ 2026-11-26 21:41:48 Worker STOPPED Interrupted

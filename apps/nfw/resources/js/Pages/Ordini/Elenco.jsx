@@ -29,7 +29,7 @@ export default function Elenco({ orders }) {
                         )}
                         {o.status === 'shipped' && (
                             <p className="mt-2 text-sm text-stone-600">
-                                {o.carrier ? <>Corriere {o.carrier}, tracking <span className="font-mono">{o.tracking_code}</span> · </> : null}
+                                {o.carrier ? <>{o.carrier}, tracking <span className="font-mono">{o.tracking_code}</span> · </> : null}
                                 spedito {dateTime(o.shipped_at)}
                                 {o.carrier && <> · <a className="text-emerald-700 hover:underline" href={`/ordini/${o.uuid}/fattura`} target="_blank">Fattura PDF</a></>}
                             </p>

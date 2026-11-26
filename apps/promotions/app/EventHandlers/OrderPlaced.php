@@ -26,13 +26,18 @@ class OrderPlaced
             return;
         }
 
-        DB::table('redemptions')->insert(array_map(fn ($u) => [
+        // Second line of defence: the unique key (order, rule) makes a repeat a no-op.
+        $inserted = DB::table('redemptions')->insertOrIgnore(array_map(fn ($u) => [
             'order_uuid' => $p['order_id'],
             'rule_code' => $u['code'],
             'discount_cents' => $u['discount_cents'],
             'seller_code' => $p['seller']['code'],
             'redeemed_at' => now(),
         ], $used));
+
+        if ($inserted === 0) {
+            return;
+        }
 
         $this->outbox->record('aurora.promotions', 'promotion.redeemed', $p['order_id'], [
             'order_id' => $p['order_id'],

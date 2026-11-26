@@ -1,0 +1,54 @@
+
+ INFO Consuming aurora.orders as group promotions-orders. 
+
+[2026-11-26 21:39:30] local.ERROR: Event handling failed {"error":"SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '01a219cb-d608-7316-8049-d3b85c5b43f0-TRIO-CORPO' for key 'redemptions_order_uuid_rule_code_unique' (Connection: mariadb, Host: 127.0.0.1, Port: 3306, Database: promotions, SQL: insert into `redemptions` (`discount_cents`, `order_uuid`, `redeemed_at`, `rule_code`, `seller_code`) values (580, 01a219cb-d608-7316-8049-d3b85c5b43f0, 2026-11-26 21:39:30, TRIO-CORPO, INC-000011), (957, 01a219cb-d608-7316-8049-d3b85c5b43f0, 2026-11-26 21:39:30, SOGLIA-80, INC-000011), (0, 01a219cb-d608-7316-8049-d3b85c5b43f0, 2026-11-26 21:39:30, OMAGGIO-NOTTE, INC-000011))","offset":0} 
+ ERROR SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '01a219cb-d608-7316-8049-d3b85c5b43f0-TRIO-CORPO' for key 'redemptions_order_uuid_rule_code_unique' (Connection: mariadb, Host: 127.0.0.1, Port: 3306, Database: promotions, SQL: insert into `redemptions` (`discount_cents`, `order_uuid`, `redeemed_at`, `rule_code`, `seller_code`) values (580, 01a219cb-d608-7316-8049-d3b85c5b43f0, 2026-11-26 21:39:30, TRIO-CORPO, INC-000011), (957, 01a219cb-d608-7316-8049-d3b85c5b43f0, 2026-11-26 21:39:30, SOGLIA-80, INC-000011), (0, 01a219cb-d608-7316-8049-d3b85c5b43f0, 2026-11-26 21:39:30, OMAGGIO-NOTTE, INC-000011)). 
+
+
+ INFO Consuming aurora.orders as group promotions-orders. 
+
+21:40:15 handled order.placed 01a219cb-d61b-751e-b544-b096944d8696
+21:40:15 handled order.placed 01a219cb-d65e-7158-8432-aa38e1a953b4
+21:40:15 handled order.placed 01a219cb-d687-710a-90d3-a6b3cbd668f1
+21:40:15 handled order.placed 01a219cb-d6ab-727e-b2c5-b9cf983f0d82
+21:40:34 handled order.placed 01a219cc-b5c9-71f3-b889-139851f77a44
+21:40:34 handled order.placed 01a219cc-b5f7-70c8-a627-b36e3469b38b
+21:40:34 handled order.placed 01a219cc-b61f-76bc-b96d-9cf1ee251de2
+21:40:34 handled order.placed 01a219cc-b64b-774b-9663-76caf40463bb
+21:40:34 handled order.placed 01a219cc-b66f-78e1-b018-8d8a51b3edda
+21:40:34 handled order.placed 01a219cc-b693-76c8-9725-eb3b3e5050cd
+21:40:34 handled order.placed 01a219cc-b6bc-75b2-a881-1d45c01294b3
+21:40:34 handled order.placed 01a219cc-b6e5-714f-a665-1061461be732
+21:40:34 handled order.placed 01a219cc-b70d-7e08-b735-604bfc294f2f
+21:40:34 handled order.placed 01a219cc-b732-7906-970a-304ea1792058
+21:40:34 handled order.placed 01a219cc-b756-767a-92ea-5fcfecbe9732
+21:40:34 handled order.placed 01a219cc-b77b-7fb6-b16a-06a993615247
+21:40:34 handled order.placed 01a219cc-b7a0-766a-9a2e-e4af8668f231
+21:40:34 handled order.placed 01a219cc-b7c4-7a9b-8a7c-18f26778bb79
+21:40:34 handled order.placed 01a219cc-b7ea-7bba-b649-64ed49d0a2bb
+21:40:34 handled order.placed 01a219cc-b80d-7014-8914-07deeeb382c4
+21:40:34 handled order.placed 01a219cc-b836-772f-a3c7-ba74529e484b
+21:40:34 handled order.placed 01a219cc-b86e-7e2d-b1b6-2a0fc4ac8e51
+21:40:34 handled order.placed 01a219cc-b898-75c6-8c25-3e3e75e0f436
+21:40:34 handled order.placed 01a219cc-b8c1-7035-aa32-4f742f4fe1f6
+21:40:34 handled order.placed 01a219cc-b8ea-78d4-b235-868a0f9f176d
+21:40:34 handled order.placed 01a219cc-b90f-74d4-8e85-ad11ee3a0f71
+21:40:34 handled order.placed 01a219cc-b931-7f60-919b-06818c074d17
+21:40:34 handled order.placed 01a219cc-b95b-7722-93e7-e033a7d5d7a5
+21:40:34 handled order.placed 01a219cc-b990-7395-94ce-427f1ceb0276
+21:40:34 handled order.placed 01a219cc-b9b6-7a9f-b094-8d9f2b6677dc
+21:40:34 handled order.placed 01a219cc-b9df-728f-a0c6-6d2ed55832b5
+21:40:34 handled order.placed 01a219cc-ba05-70a3-98cd-cd9c69d6b2bd
+21:40:34 handled order.placed 01a219cc-ba2e-7672-acbd-79114febabfa
+21:40:34 handled order.placed 01a219cc-ba59-713b-a863-b61baed9422a
+21:40:34 handled order.placed 01a219cc-ba7f-78b8-a3c5-77cb41a43a02
+21:40:34 handled order.placed 01a219cc-baa5-7c72-9755-ca0be8951390
+21:40:34 handled order.placed 01a219cc-bacd-714f-91dd-92f8b68402ee
+21:40:34 handled order.placed 01a219cc-baf4-71d7-bc0d-2be53c781501
+21:40:34 handled order.placed 01a219cc-bb17-7364-a1d9-4ede169825df
+21:40:34 handled order.placed 01a219cc-bb3e-73ca-a681-6bc9b6ce6657
+21:40:34 handled order.placed 01a219cc-bb63-7f4b-9645-92e8d5b8685e
+21:40:34 handled order.placed 01a219cc-bb8a-75b2-9acf-634dd7adcd14
+21:40:34 handled order.placed 01a219cc-bbad-7158-9e09-b5a72acf35d2
+21:40:34 handled order.placed 01a219cc-bbd1-7595-9bdb-7b75fa7f2118
+21:43:50 handled order.placed 01a219d0-985f-73c6-9fe8-eb6e081fb7ee

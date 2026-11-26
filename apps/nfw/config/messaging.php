@@ -13,7 +13,7 @@ return [
     'topics' => ['aurora.orders', 'aurora.shipments', 'aurora.promotions'],
 
     'consumers' => [
-        'nfw' => [
+        'shipments' => [
             'topics' => ['aurora.shipments'],
             'handlers' => [
                 'order.shipped' => App\EventHandlers\OrderShipped::class,

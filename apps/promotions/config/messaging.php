@@ -7,7 +7,7 @@ return [
     'topics' => ['aurora.orders', 'aurora.shipments', 'aurora.promotions'],
 
     'consumers' => [
-        'promotions' => [
+        'orders' => [
             'topics' => ['aurora.orders'],
             'handlers' => [
                 'order.placed' => App\EventHandlers\OrderPlaced::class,

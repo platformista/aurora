@@ -35,8 +35,8 @@ class OrderPlacedTest extends TestCase
         $event = $this->event();
         $consumer = app(IdempotentConsumer::class);
 
-        $this->assertTrue($consumer->handle('oms', $event, app(OrderPlaced::class)));
-        $this->assertFalse($consumer->handle('oms', $event, app(OrderPlaced::class)));
+        $this->assertTrue($consumer->handle('orders', $event, app(OrderPlaced::class)));
+        $this->assertFalse($consumer->handle('orders', $event, app(OrderPlaced::class)));
 
         $shipment = Shipment::sole();
         $this->assertSame($event->payload['order_id'], $shipment->order_uuid);
@@ -55,10 +55,22 @@ class OrderPlacedTest extends TestCase
     public function test_the_invoice_can_be_fetched_over_the_internal_endpoint(): void
     {
         $event = $this->event();
-        app(IdempotentConsumer::class)->handle('oms', $event, app(OrderPlaced::class));
+        app(IdempotentConsumer::class)->handle('orders', $event, app(OrderPlaced::class));
 
         $this->get('/internal/invoices/'.$event->payload['order_id'])->assertOk()->assertHeader('Content-Type', 'application/pdf');
         $this->get('/internal/invoices/'.Str::uuid7())->assertNotFound();
         $this->getJson('/internal/stats')->assertJson(['app' => 'oms', 'shipments' => 1, 'invoices' => 1, 'outbox_pending' => 1]);
+    }
+
+    public function test_the_handler_is_idempotent_on_its_own(): void
+    {
+        $event = $this->event();
+        $handler = app(OrderPlaced::class);
+
+        DB::transaction(fn () => $handler($event));
+        DB::transaction(fn () => $handler($event));   // bypassing processed_events on purpose
+
+        $this->assertSame(1, Shipment::count());
+        $this->assertSame(1, OutboxEvent::count());
     }
 }
