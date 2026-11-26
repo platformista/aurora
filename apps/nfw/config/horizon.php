@@ -198,14 +198,14 @@ return [
 
     // Two Upsun workers run `php artisan horizon` from this same file; each
     // starts only the supervisors named in its HORIZON_SUPERVISORS variable
-    // (see .upsun/config.yaml), so the commissions queue gets its own
-    // container that can be resized on its own.
-    'commission_processes' => (int) env('HORIZON_COMMISSION_PROCESSES', 8),
+    // (see .upsun/config.yaml and AppServiceProvider), so the commissions queue
+    // gets its own container that can be resized on its own.
+    'commission_processes' => 8,
 
     'defaults' => [],
 
-    'environments' => (function () {
-        $all = [
+    'environments' => [
+        'production' => [
             'default' => [
                 'connection' => 'redis',
                 'queue' => ['default'],
@@ -221,17 +221,13 @@ return [
                 // Fixed pool, more processes than vCPUs: the jobs are CPU-bound,
                 // so the run time follows the CPU given to this container.
                 'balance' => false,
-                'maxProcesses' => (int) env('HORIZON_COMMISSION_PROCESSES', 8),
+                'maxProcesses' => 8,
                 'tries' => 1,
                 'timeout' => 900,
                 'memory' => 512,
             ],
-        ];
-        $wanted = array_filter(array_map('trim', explode(',', (string) env('HORIZON_SUPERVISORS', 'default,commissions'))));
-        $supervisors = array_intersect_key($all, array_flip($wanted));
-
-        return ['production' => $supervisors, 'staging' => $supervisors, 'local' => $supervisors];
-    })(),
+        ],
+    ],
 
     /*
     |--------------------------------------------------------------------------
