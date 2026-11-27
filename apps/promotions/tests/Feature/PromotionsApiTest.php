@@ -27,6 +27,61 @@ class PromotionsApiTest extends TestCase
             ->assertJsonPath('gifts.0.sku', 'OMG-001');
     }
 
+    public function test_cofanetto_viso_applies_with_three_face_products(): void
+    {
+        $this->postJson('/api/quote', ['lines' => [
+            ['sku' => 'VIS-001', 'category' => 'Viso', 'qty' => 1, 'unit_price_cents' => 990],
+            ['sku' => 'VIS-002', 'category' => 'Viso', 'qty' => 1, 'unit_price_cents' => 2490],
+            ['sku' => 'VIS-003', 'category' => 'Viso', 'qty' => 1, 'unit_price_cents' => 1990],
+        ]])
+            ->assertOk()
+            ->assertJsonPath('subtotal_cents', 5470)
+            ->assertJsonCount(1, 'discounts')
+            ->assertJsonPath('discounts.0.code', 'COFANETTO-VISO')
+            ->assertJsonPath('discounts.0.label', '20% su 3 o più prodotti Viso')
+            ->assertJsonPath('discounts.0.amount_cents', 1094)
+            ->assertJsonPath('total_cents', 4376);
+    }
+
+    public function test_cofanetto_viso_combines_with_soglia_80(): void
+    {
+        $this->postJson('/api/quote', ['lines' => [
+            ['sku' => 'VIS-001', 'category' => 'Viso', 'qty' => 1, 'unit_price_cents' => 990],
+            ['sku' => 'VIS-002', 'category' => 'Viso', 'qty' => 1, 'unit_price_cents' => 2490],
+            ['sku' => 'VIS-003', 'category' => 'Viso', 'qty' => 1, 'unit_price_cents' => 1990],
+            ['sku' => 'PRO-002', 'category' => 'Profumi', 'qty' => 2, 'unit_price_cents' => 3990],
+        ]])
+            ->assertOk()
+            ->assertJsonPath('subtotal_cents', 13450)
+            ->assertJsonCount(2, 'discounts')
+            ->assertJsonPath('discounts.0.code', 'COFANETTO-VISO')
+            ->assertJsonPath('discounts.0.amount_cents', 1094)
+            ->assertJsonPath('discounts.1.code', 'SOGLIA-80')
+            ->assertJsonPath('discounts.1.amount_cents', 1235)
+            ->assertJsonPath('discount_cents', 2329)
+            ->assertJsonPath('total_cents', 11121);
+    }
+
+    public function test_cofanetto_viso_counts_quantity_not_lines(): void
+    {
+        $this->postJson('/api/quote', ['lines' => [
+            ['sku' => 'VIS-004', 'category' => 'Viso', 'qty' => 3, 'unit_price_cents' => 2290],
+        ]])
+            ->assertOk()
+            ->assertJsonPath('discounts.0.code', 'COFANETTO-VISO')
+            ->assertJsonPath('discounts.0.amount_cents', 1374);
+    }
+
+    public function test_cofanetto_viso_needs_at_least_three_face_products(): void
+    {
+        $this->postJson('/api/quote', ['lines' => [
+            ['sku' => 'VIS-001', 'category' => 'Viso', 'qty' => 1, 'unit_price_cents' => 990],
+            ['sku' => 'VIS-002', 'category' => 'Viso', 'qty' => 1, 'unit_price_cents' => 2490],
+        ]])
+            ->assertOk()
+            ->assertJsonCount(0, 'discounts');
+    }
+
     public function test_quote_rejects_an_empty_basket(): void
     {
         $this->postJson('/api/quote', ['lines' => []])->assertUnprocessable();
