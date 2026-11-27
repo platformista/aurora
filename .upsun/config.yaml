@@ -55,6 +55,9 @@ applications:
         set -eux
         # The storage mount starts empty on a new environment.
         mkdir -p storage/framework/cache/data storage/framework/sessions storage/framework/views storage/logs
+        # bootstrap/cache is a persistent mount: drop the previous deploy's config
+        # cache in its own process, so `optimize` boots with the new code's config.
+        php artisan config:clear
         php artisan optimize
         php artisan migrate --force
         php artisan aurora:kafka-topics
@@ -131,6 +134,9 @@ applications:
         set -eux
         # The storage mount starts empty on a new environment.
         mkdir -p storage/framework/cache/data storage/framework/sessions storage/framework/views storage/logs
+        # bootstrap/cache is a persistent mount: drop the previous deploy's config
+        # cache in its own process, so `optimize` boots with the new code's config.
+        php artisan config:clear
         php artisan optimize
         php artisan migrate --force
     web:
@@ -190,6 +196,9 @@ applications:
         set -eux
         # The storage mount starts empty on a new environment.
         mkdir -p storage/framework/cache/data storage/framework/sessions storage/framework/views storage/logs
+        # bootstrap/cache is a persistent mount: drop the previous deploy's config
+        # cache in its own process, so `optimize` boots with the new code's config.
+        php artisan config:clear
         php artisan optimize
         php artisan migrate --force
     web:
