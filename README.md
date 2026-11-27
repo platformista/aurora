@@ -261,7 +261,15 @@ These need a person with admin rights on GitHub and on the Upsun project.
      with `-e TOKEN=...`.
    - `COMMISSION_COMPLEXITY`, `HORIZON_COMMISSION_PROCESSES`: set on the
      `commissions` worker in `.upsun/config.yaml`.
-5. **Protect the demo** — `/admin` and `/horizon` have no login. Before sharing
+5. **Upsun Dispatch (optional, scene 3 of DEMO.md)** — in the Upsun Dispatch
+   console: create an organisation, install the Dispatch GitHub App on the
+   repository (**Settings → GitHub**; a repository admin is needed, and Issue to
+   code needs push access), set Code review to automatic and enable **Plan
+   approval** for Issue to code. The day before the session, open the issue
+   given in DEMO.md and comment exactly `@upsun-dispatch implement`. Dispatch is
+   not required by anything in this repository or on Upsun; the same scene works
+   with a hand-written pull request.
+6. **Protect the demo** — `/admin` and `/horizon` have no login. Before sharing
    the URL: `upsun httpaccess --auth demo:<password>` (per environment).
 
 ## Splitting into three projects

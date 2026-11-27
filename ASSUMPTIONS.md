@@ -158,3 +158,24 @@ checks; the rest are still open.
   `application/pdf`); simulated outage with 60 orders (all HTTP 201, backlog 60,
   real `Message timed out` error), drained in 10.8 s after recovery, 61 orders and
   61 shipments, 0 duplicates.
+
+## Upsun Dispatch (scene 3)
+
+From the Dispatch docs in the same llms-full.txt, not yet tried on this repository:
+
+- Setup is console-only: organisation, Dispatch GitHub App installation, workflow
+  settings (Code review trigger mode, Plan approval for Issue to code).
+- Issue to code starts only when an issue body or a new comment is exactly
+  `@upsun-dispatch implement`; it posts a plan, waits for approval when Plan
+  approval is on, codes, runs a critic pass, pushes `upsun-dispatch/issue-<n>`
+  and opens a PR. A run can take up to 20 minutes, hence the preparation the day
+  before.
+- Free organisations: 20 agent-minutes a day, one run at a time, and content may
+  be used to train models; paid organisations: no daily limit, content not used
+  for training.
+- Assumed: the Upsun GitHub integration treats Dispatch's PR like any other and
+  builds a `pr-<n>` environment, and GitHub Actions runs on it (same-repository
+  branch).
+- The issue text is written so the change stays inside the Promotion Engine
+  (one new migration, one test, existing `category_quantity` rule type). The
+  agent's output still varies between runs; check it before the session.

@@ -14,9 +14,9 @@ Convenzioni:
 | # | Scena | Minuti |
 |---|---|---|
 | 0 | Apertura: cosa vedremo | 5 |
-| 1 | Tour del repository: un file YAML al posto dei server | 20 |
+| 1 | Tour del repository: un file YAML al posto dei server | 15 |
 | 2 | Un `git push` fa il deploy | 10 |
-| 3 | Una pull request apre un ambiente con i dati di produzione | 15 |
+| 3 | Dall'issue alla pull request con Upsun Dispatch (opzionale), ambiente di anteprima con i dati di produzione | 20 |
 | 4 | Picco serale: carico k6 e ridimensionamento | 25 |
 | 5 | Calcolo provvigioni, più veloce dopo il ridimensionamento | 15 |
 | 6 | Broker non disponibile (simulato) e ripristino | 15 |
@@ -47,14 +47,27 @@ Da fare con calma, non davanti al cliente.
    e annotare la durata a 0,5 CPU. Questo è il numero da battere in scena.
 6. **Protezione**: `upsun httpaccess -e main --auth demo:<password>`. Ricordarsi
    di passare le credenziali a k6 (scena 4).
-7. **Branch pronto per la PR** (scena 3), senza aprire la PR:
-   ```bash
-   git checkout -b feature/soglia-spedizione
-   # modifica visibile e innocua, ad esempio il titolo della pagina ordini:
-   sed -i "s/title=\"I miei ordini\"/title=\"I miei ordini e spedizioni\"/" apps/nfw/resources/js/Pages/Ordini/Elenco.jsx
-   git commit -am "Rinomina la pagina ordini" && git push -u origin feature/soglia-spedizione
-   git checkout main
-   ```
+7. **Upsun Dispatch** (scena 3). Una tantum, dalla console di Upsun Dispatch:
+   - accedere, creare un'organizzazione;
+   - **Settings → GitHub**: installare la GitHub App di Upsun Dispatch su
+     `platformista/aurora` (serve un admin del repository; Issue to code richiede
+     anche il permesso di push);
+   - **Workflows**: Code review in modalità automatica; per Issue to code attivare
+     **Plan approval**.
+
+   Poi, il giorno prima, preparare la PR della scena 3 (una run può durare fino a
+   20 minuti, per questo non si avvia a freddo davanti al cliente):
+   1. Aprire su GitHub l'issue con il testo riportato nella scena 3.
+   2. Aggiungere un commento il cui testo sia **esattamente**
+      `@upsun-dispatch implement` (qualsiasi altro testo nel commento lo invalida).
+   3. Leggere il piano che Dispatch pubblica sull'issue e approvarlo dalla console.
+   4. Attendere la PR (branch `upsun-dispatch/issue-<numero>`), il controllo
+      GitHub Actions, la revisione di Dispatch e l'ambiente `pr-<numero>`.
+   5. Verificare nell'anteprima che la promozione funzioni (3 prodotti Viso nel
+      carrello). **Non fare merge.**
+
+   Se la run fallisce o il codice non convince, preparare la stessa PR a mano
+   (vedi "Piano B"): la scena 3 funziona anche senza Dispatch.
 8. **Postazione**: k6 installato (`k6 version`), CLI Upsun autenticata
    (`upsun auth:info`), schede del browser aperte su: repository GitHub,
    console Upsun del progetto, `$URL/admin`, `$URL/horizon`, `$URL/ordini`
@@ -77,7 +90,7 @@ backlog.
 
 ---
 
-## Scena 1 — Tour del repository (20 min)
+## Scena 1 — Tour del repository (15 min)
 
 **Comandi / schermate:**
 
@@ -144,40 +157,87 @@ riusano l'immagine precedente.
 
 ---
 
-## Scena 3 — Pull request con ambiente di anteprima (15 min)
+## Scena 3 — Dall'issue alla pull request con Upsun Dispatch, ambiente di anteprima (20 min)
 
-**Comandi:**
+**Premessa da dire, prima di mostrare Dispatch:** "Upsun Dispatch è
+**facoltativo**. È un servizio separato, che potete attivare oppure no: tutto
+quello che avete visto e vedrete oggi (deploy, ambienti per ogni pull request,
+risorse, worker, servizi) funziona allo stesso modo con pull request scritte a
+mano. Ve lo mostriamo perché si inserisce nello stesso flusso di lavoro."
 
-Aprire la PR del branch preparato (`feature/soglia-spedizione`) su GitHub, dal
-browser, verso `main`. Poi:
+**L'issue usata (aperta il giorno prima):**
 
-```bash
-upsun environment:list                     # compare pr-<numero>
-upsun activity:log -e pr-<numero>
-upsun url -e pr-<numero> --primary
-upsun ssh -e pr-<numero> --app nfw -- php artisan tinker --execute 'echo App\Models\Order::count();'
-```
+> **Titolo:** Promozione COFANETTO-VISO
+>
+> Aggiungere al Promotion Engine la promozione `COFANETTO-VISO`: 20% di sconto
+> sui prodotti della categoria Viso quando nel carrello ci sono almeno 3 articoli
+> Viso.
+>
+> - Usare il tipo di regola esistente `category_quantity` con i parametri
+>   `{"category": "Viso", "min_qty": 3, "percent": 20}` e l'etichetta
+>   "20% su 3 o più prodotti Viso".
+> - Inserire la regola con una **nuova** migrazione in
+>   `apps/promotions/database/migrations`, senza modificare quelle esistenti.
+> - Aggiungere un test in `apps/promotions/tests/Feature` che chiami
+>   `POST /api/quote` e verifichi lo sconto, anche in combinazione con
+>   `SOGLIA-80`.
+> - Non toccare NFW né OMS.
+
+Commento di avvio, da solo: `@upsun-dispatch implement`
+
+**Percorso (5 minuti su Dispatch, poi l'anteprima):**
+
+1. **L'issue su GitHub:** una richiesta come quelle che riceveranno dal cliente,
+   in italiano. Sotto, il **piano** pubblicato da Dispatch (riassunto, file
+   coinvolti, complessità, assunzioni, rischi) e l'approvazione di una persona:
+   il controllo resta al team.
+2. **La pull request:** il diff (una migrazione e un test, solo nel Promotion
+   Engine), il controllo GitHub Actions verde (test su PHP 8.5 e MariaDB), i
+   commenti di revisione di Dispatch e il link all'ambiente Upsun.
+3. **Facoltativo, dal vivo:** commentare sulla PR, da solo,
+   `@upsun-dispatch review`. Proseguire senza aspettare; il risultato si guarda a
+   fine scena o dopo la scena 4.
+4. **L'ambiente di anteprima:**
+
+   ```bash
+   upsun environment:list                     # compare pr-<numero>
+   upsun url -e pr-<numero> --primary
+   upsun ssh -e pr-<numero> --app nfw -- php artisan tinker --execute 'echo App\Models\Order::count();'
+   ```
+
+   Nell'anteprima: accedere come un'incaricata, mettere nel carrello 3 prodotti
+   Viso e premere **Calcola prezzo**: compare "20% su 3 o più prodotti Viso".
+   Su `main` la stessa operazione non applica lo sconto.
 
 **Cosa vede il pubblico:**
 
-- Sulla PR, il controllo GitHub Actions (test su PHP 8.5 e MariaDB) e il link
-  all'ambiente Upsun.
-- Un ambiente completo, con tre app, worker, MariaDB, Valkey e Kafka, creato
-  in pochi minuti.
-- Gli stessi 500.000 ordini di produzione (clone dei dati del genitore) e la
-  modifica del branch visibile.
-- Nel pannello demo dell'anteprima, "Fatture PDF (object storage)" se il bucket è
-  stato clonato.
+- Un ambiente completo (tre app, worker, MariaDB, Valkey, Kafka) creato per la
+  pull request, con gli stessi 500.000 ordini di produzione.
+- Solo l'app `promotions` è stata ricostruita; NFW e OMS riusano l'immagine di
+  `main`.
+- La modifica funziona sui dati reali prima di arrivare in produzione.
 
-**Chiusura:** fare merge della PR → l'ambiente `pr-<numero>` viene eliminato e
-`main` si aggiorna.
+**Chiusura:** fare merge della PR → l'ambiente `pr-<numero>` viene eliminato,
+`main` si aggiorna e la migrazione aggiunge la promozione in produzione.
 
-**Nota sui costi:** l'ambiente nasce con le dimensioni di produzione
-(`--resources-init parent`) e con il bucket clonato. Per una dimostrazione breve
-va bene; nell'uso reale si possono ridurre (`upsun resources:set -e pr-<numero> ...`).
+**Domande probabili su Dispatch (risposte brevi):**
+
+- *È obbligatorio?* No. È un servizio a parte; la piattaforma non dipende da esso.
+- *I nostri dati addestrano i modelli?* Nel piano gratuito contenuti e risultati
+  possono essere usati per l'addestramento; nel piano a pagamento no. Per il
+  codice di un cliente serve il piano a pagamento.
+- *Chi decide?* Le persone: il piano si approva prima che venga scritto codice,
+  la PR passa da revisione e test, il merge lo fa il team.
+- *Quanto costa?* Gratuito fino a 20 minuti di agente al giorno; a pagamento a
+  consumo (vedi la pagina prezzi di Upsun Dispatch).
+
+**Nota sui costi dell'anteprima:** l'ambiente nasce con le dimensioni di
+produzione (`--resources-init parent`) e con il bucket clonato. Fare merge o
+chiudere la PR lo stesso giorno.
 
 > Collegamento: il collaudo con Yves Rocher Italia avviene su una copia reale del
-> sistema, per ogni modifica, senza mantenere a mano un ambiente di staging.
+> sistema, per ogni modifica, senza mantenere a mano un ambiente di staging; e,
+> se lo vorranno, una parte del lavoro ripetitivo può partire da un'issue.
 
 ---
 
@@ -362,6 +422,8 @@ Mostrare anche, nella console, la pagina dell'ambiente: risorse, metriche, attiv
 |---|---|
 | Il deploy della scena 2 è lento | Mostrare un'attività precedente con `upsun activity:log <id>`; riprendere più tardi |
 | L'ambiente PR non è pronto | Proseguire con la scena 4 e tornare alla 3 alla fine |
+| La run di Dispatch è fallita o il codice non convince | Preparare la stessa PR a mano dal branch `feature/cofanetto-viso`: una migrazione che inserisce la regola (come `2026_01_01_000002_seed_promotion_rules.php`) e un test. Nella scena dire che la PR è scritta a mano: è proprio il caso in cui Dispatch non si usa |
+| Dispatch non risponde al commento | Il commento deve contenere solo `@upsun-dispatch implement` (o `review`), senza altro testo; controllare la run nella console di Dispatch |
 | k6 non raggiunge il sito | Verificare credenziali HTTP e `$URL`; in alternativa generare ordini dal browser |
 | Il calcolo provvigioni resta "queued" | `upsun ssh -e main --app nfw --worker commissions -- php artisan horizon:status`; controllare il nome e la dimensione del worker con `upsun resources:get` |
 | Il backlog non si svuota dopo il ripristino | Controllare che il pannello mostri "broker raggiungibile"; il relay riprova al massimo ogni 30 secondi |
