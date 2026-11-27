@@ -54,13 +54,17 @@ Da fare con calma, non davanti al cliente.
      anche il permesso di push);
    - **Workflows**: Code review in modalità automatica; per Issue to code attivare
      **Plan approval**.
+   - Fatto il 27/11/2026: Dispatch collegato a `platformista/aurora`.
 
    Poi, il giorno prima, preparare la PR della scena 3 (una run può durare fino a
    20 minuti, per questo non si avvia a freddo davanti al cliente):
    1. Aprire su GitHub l'issue con il testo riportato nella scena 3.
    2. Aggiungere un commento il cui testo sia **esattamente**
       `@upsun-dispatch implement` (qualsiasi altro testo nel commento lo invalida).
-   3. Leggere il piano che Dispatch pubblica sull'issue e approvarlo dalla console.
+   3. Leggere il piano che Dispatch pubblica sull'issue (circa 1 minuto dopo il
+      commento) e approvarlo con un commento sull'issue che inizi con
+      `@upsun-dispatch plan approve` (in alternativa `plan reject` o
+      `plan revise` seguito dalle modifiche). L'approvazione la scrive una persona.
    4. Attendere la PR (branch `upsun-dispatch/issue-<numero>`), il controllo
       GitHub Actions, la revisione di Dispatch e l'ambiente `pr-<numero>`.
    5. Verificare nell'anteprima che la promozione funzioni (3 prodotti Viso nel
@@ -185,12 +189,20 @@ mano. Ve lo mostriamo perché si inserisce nello stesso flusso di lavoro."
 
 Commento di avvio, da solo: `@upsun-dispatch implement`
 
+**Prova generale del 27/11/2026** (issue #1, PR #2): piano pubblicato circa 1
+minuto dopo il commento; PR con una migrazione e quattro test, tutti i controlli
+verdi, revisione di Dispatch senza osservazioni; ambiente `pr-2` pronto 3 minuti e
+23 secondi dopo l'apertura della PR, con solo `promotions` ricostruita; nel
+carrello con 3 prodotti Viso l'anteprima mostra "20% su 3 o più prodotti Viso"
+(54,70 € → 43,76 €), `main` no.
+
 **Percorso (5 minuti su Dispatch, poi l'anteprima):**
 
 1. **L'issue su GitHub:** una richiesta come quelle che riceveranno dal cliente,
    in italiano. Sotto, il **piano** pubblicato da Dispatch (riassunto, file
-   coinvolti, complessità, assunzioni, rischi) e l'approvazione di una persona:
-   il controllo resta al team.
+   coinvolti, complessità, scenari con gli importi attesi, assunzioni, rischi) e
+   il commento `@upsun-dispatch plan approve` di una persona: il controllo resta
+   al team.
 2. **La pull request:** il diff (una migrazione e un test, solo nel Promotion
    Engine), il controllo GitHub Actions verde (test su PHP 8.5 e MariaDB), i
    commenti di revisione di Dispatch e il link all'ambiente Upsun.
