@@ -238,8 +238,12 @@ questa demo.
 `$URL/horizon` → coda `commissions`: decine di job in parallelo.
 
 **Cosa vede il pubblico:** in "Ultimi calcoli provvigioni", circa 400.000 ordini
-del ciclo, una cinquantina di job, circa 50.000 beneficiarie, e la durata
-(riferimento: quella annotata nella prova generale, circa 1–2 minuti).
+del ciclo, 51 job, circa 50.000 beneficiarie, e la durata. Misurato su `main` il
+27/11/2026 a 0,5 CPU: **102 secondi**.
+
+**Attenzione:** premere "Calcola ora" **una sola volta** e attendere. Due calcoli
+accodati insieme si dividono lo stesso worker e falsano entrambe le durate (in
+prova: 204 s e 110 s invece di 102 s).
 
 **Passo 2, ridimensionare solo il worker delle provvigioni:**
 
@@ -247,8 +251,10 @@ del ciclo, una cinquantina di job, circa 50.000 beneficiarie, e la durata
 upsun resources:set -e main --size nfw--commissions:2
 ```
 
-Rilanciare **"Calcola ora"**. La durata scende, in proporzione alla CPU, a circa
-un quarto. Il totale in euro è identico al centesimo.
+Attendere che il deploy delle risorse finisca (circa un minuto), poi rilanciare
+**"Calcola ora"**. La durata attesa scende, in proporzione alla CPU, a circa un
+quarto (stima: 25–30 secondi; da misurare nella prova generale). Il totale in euro
+è identico al centesimo (in prova: 9.607.701,51 €).
 
 **Da spiegare:** il worker `commissions` è un container separato con il proprio
 Horizon. Si ridimensiona da solo, senza toccare il sito o le code ordinarie.
@@ -293,7 +299,9 @@ k6 run -e BASE_URL="https://demo:<password>@${URL#https://}" -e PEAK_RPS=5 -e RA
 
 **Passo 3:** premere **"Ripristina il broker"**.
 
-**Cosa vede il pubblico:** entro pochi secondi il backlog si svuota, le spedizioni
+**Cosa vede il pubblico:** entro pochi secondi il backlog si svuota (in prova su
+`main`: 60 ordini, svuotato in 11 secondi; il relay riprova con attese crescenti
+fino a 30 secondi, quindi dopo un'interruzione lunga può servire mezzo minuto), le spedizioni
 raggiungono gli ordini, "Duplicati scartati" mostra eventuali ripetizioni
 assorbite, e compare "Tutti gli ordini sono arrivati all'OMS, nessuno due volte".
 Su `/ordini` gli stati passano a "Spedito" e le fatture sono scaricabili.

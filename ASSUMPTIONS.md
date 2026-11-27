@@ -81,7 +81,9 @@ checks; the rest are still open.
    `COMMISSION_COMPLEXITY`, `HORIZON_COMMISSION_PROCESSES`) are read with
    `getenv()` at runtime in `AppServiceProvider`, so they are correct whether or
    not a worker sees that cache. Tested locally both ways.
-10. **Commission timings on Upsun.** Measured locally (about 37 s of CPU in total
+10. **Commission timings on Upsun — measured at 0.5 CPU:** 102.4 s for 399,760
+    orders (27 November 2026), about 35% slower than the local projection. The 2 CPU
+    figure is still a projection (about 25–30 s). Original note: Measured locally (about 37 s of CPU in total
     with complexity 200). The 0.5 → 2 vCPU projection (about 75 s → under 20 s)
     assumes Upsun's CPU quota behaves like a cgroup limit and that a vCPU is
     comparable to the local core. Re-measure during preparation and adjust
@@ -150,3 +152,9 @@ checks; the rest are still open.
   need `upsun ssh` (seeding, Horizon status) must be run from a workstation.
 - **Default sizes after the first deploy:** every app and worker 0.5 CPU;
   MariaDB, Kafka and Valkey 0.5 CPU with 512 MB disk each.
+- **Verified on production over HTTP (27 November 2026):** one order end to end
+  in under 6 s (NFW → Promotion Engine → outbox → Kafka → OMS → back to NFW);
+  invoice PDF written to and read back from object storage (HTTP 200,
+  `application/pdf`); simulated outage with 60 orders (all HTTP 201, backlog 60,
+  real `Message timed out` error), drained in 10.8 s after recovery, 61 orders and
+  61 shipments, 0 duplicates.
