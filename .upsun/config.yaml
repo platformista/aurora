@@ -53,6 +53,8 @@ applications:
         npm ci && npm run build
       deploy: |
         set -eux
+        # The storage mount starts empty on a new environment.
+        mkdir -p storage/framework/cache/data storage/framework/sessions storage/framework/views storage/logs
         php artisan optimize
         php artisan migrate --force
         php artisan aurora:kafka-topics
@@ -127,6 +129,8 @@ applications:
         composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
       deploy: |
         set -eux
+        # The storage mount starts empty on a new environment.
+        mkdir -p storage/framework/cache/data storage/framework/sessions storage/framework/views storage/logs
         php artisan optimize
         php artisan migrate --force
     web:
@@ -184,6 +188,8 @@ applications:
         composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
       deploy: |
         set -eux
+        # The storage mount starts empty on a new environment.
+        mkdir -p storage/framework/cache/data storage/framework/sessions storage/framework/views storage/logs
         php artisan optimize
         php artisan migrate --force
     web:
