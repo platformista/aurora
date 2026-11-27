@@ -5,8 +5,9 @@ and the pages it contains for PHP, PHP extensions, workers, Laravel/Horizon,
 Kafka, MariaDB, Valkey, object storage, crons, multi-app, the GitHub
 integration, resources and container profiles. Upsun CLI 5.19.0 was used to
 validate `.upsun/config.yaml` (`upsun app:config-validate`: valid) and to check
-command flags with `--help`. **Nothing has been deployed yet**, so every item
-under "Not confirmed" is still open until the first deploy.
+command flags with `--help`. First deployed on 27 November 2026 (project `4vaxw3yw3bshs`, eu-5). Items
+marked **Confirmed on deploy** were settled by the real deploy logs and HTTP
+checks; the rest are still open.
 
 ## Confirmed by the documentation
 
@@ -36,7 +37,11 @@ under "Not confirmed" is still open until the first deploy.
 
 ## Not confirmed by the documentation (check on first deploy)
 
-1. **Kafka topic creation.** The docs do not say whether the broker auto-creates
+1. **Kafka topic creation — confirmed on deploy, with a change.** The app
+   container has no `kafka-topics.sh`, and a metadata request reported
+   `Unknown topic or partition`. `aurora:kafka-topics` now sends Kafka's
+   `CreateTopics` request (v2) itself (`app/Messaging/KafkaAdmin.php`); the deploy
+   log shows the three topics exist. Original note: the docs do not say whether the broker auto-creates
    topics, and php-rdkafka has no admin API. `aurora:kafka-topics` (deploy hook)
    uses `kafka-topics.sh` if the container has it (the docs' export example runs
    it from an app container), otherwise a metadata request that creates topics
@@ -44,14 +49,17 @@ under "Not confirmed" is still open until the first deploy.
    the relays will report `Unknown topic` and the topics must be created by hand
    from an SSH session. Partition and replication defaults are also unknown;
    ordering per order is kept by keying messages on the order ID.
-2. **Worker names for `resources:set`.** The CLI has a `--worker` filter, but the
+2. **Worker names for `resources:set` — confirmed on deploy:** `upsun resources:get`
+   lists `nfw--commissions`, `oms--relay` and so on. Original note: The CLI has a `--worker` filter, but the
    docs do not show the `--size <name>:<value>` name for a worker. The runbook
    assumes `nfw--commissions`; check with `upsun resources:get` and fix DEMO.md
    if it differs.
-3. **`ext-pcntl` on Upsun's PHP 8.5.** Horizon requires it, and it is not in the
+3. **`ext-pcntl` on Upsun's PHP 8.5 — confirmed on deploy** (Composer accepted
+   Horizon's requirement at build time). Original note: Horizon requires it, and it is not in the
    extensions table. The Upsun Horizon guide works, so I assume it is compiled
    in. If it is not, `composer install` fails at build time with a clear message.
-4. **Node in the PHP image.** I install Node 24 with `n`
+4. **Node in the PHP image — confirmed on deploy:** `n auto` installed Node 24.22.3
+   and `vite build` succeeded. Original note: I install Node 24 with `n`
    (`dependencies.nodejs.n`, `N_PREFIX`, `n auto` reading `.nvmrc`), as the docs
    describe for non-Node images. It assumes the image has an npm to install `n`.
 5. **Valkey relationship scheme.** The relationship reports scheme `valkey`.
@@ -78,7 +86,8 @@ under "Not confirmed" is still open until the first deploy.
     assumes Upsun's CPU quota behaves like a cgroup limit and that a vCPU is
     comparable to the local core. Re-measure during preparation and adjust
     `COMMISSION_COMPLEXITY` if needed.
-11. **Memory of the commissions worker.** Measured locally: about 520 MB for 8
+11. **Memory of the commissions worker.** `container_profile: BALANCED` on the
+    worker is confirmed on deploy (1,088 MB at 0.5 CPU). Measured locally: about 520 MB for 8
     processes plus Horizon's master and supervisor. `BALANCED` at 0.5 CPU gives
     1,088 MB. Not measured on Upsun.
 12. **Default sizes on first deploy.** Not documented per app/worker in what I
@@ -126,3 +135,18 @@ under "Not confirmed" is still open until the first deploy.
   with HTTP access control.
 - **Invoice PDFs** are generated with dompdf, are marked as demonstrative, and
   carry an invented company name and VAT number of zeros.
+
+## Found on the first deploy (fixed)
+
+- **Mounts start empty.** `storage` is empty in every container, so Laravel's
+  default `view.compiled` (`realpath(...)`) was `false` and `optimize` failed.
+  `config/view.php` now uses the plain path, and the deploy hooks create the
+  storage directories.
+- **`bootstrap/cache` persists across deploys.** A config cache left by a failed
+  deploy made `optimize` run `view:cache` with stale paths. The deploy hooks run
+  `php artisan config:clear` in a separate process first.
+- **No SSH from the build sandbox.** Port 22 to `ssh.eu-5.platform.sh` is
+  blocked from the environment where this repository was built, so commands that
+  need `upsun ssh` (seeding, Horizon status) must be run from a workstation.
+- **Default sizes after the first deploy:** every app and worker 0.5 CPU;
+  MariaDB, Kafka and Valkey 0.5 CPU with 512 MB disk each.
