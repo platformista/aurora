@@ -21,3 +21,8 @@ export QUEUE_CONNECTION="redis"
 export REDIS_PREFIX="promotions:"
 
 export KAFKA_BROKERS="${KAFKA_HOST}:${KAFKA_PORT}"
+
+# The `storage` mount starts empty in every container (web and each worker has
+# its own), so create the directories Laravel expects before anything runs.
+mkdir -p "$PLATFORM_APP_DIR/storage/framework/cache/data" "$PLATFORM_APP_DIR/storage/framework/views" \
+    "$PLATFORM_APP_DIR/storage/framework/sessions" "$PLATFORM_APP_DIR/storage/logs" 2>/dev/null || true
